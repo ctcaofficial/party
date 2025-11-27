@@ -38,8 +38,8 @@ const BOARDS = {
     'q': { name: 'Questionable', description: 'Questionable content', category: 'Other' },
     'b': { name: 'Random', description: 'Random content', category: 'Other' },
     
-    // Admin
-    'ctca': { name: 'CTCA', description: 'CTCA Admin Board', category: 'Admin', hidden: true }
+    // CTCA
+    'ctca': { name: 'CTCA', description: 'CTCA Community Board', category: 'Other' }
 };
 
 // Get board info by tag
