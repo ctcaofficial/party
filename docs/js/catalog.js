@@ -45,7 +45,7 @@ function buildTopNav() {
     const navBoards = document.getElementById('navBoards');
     if (!navBoards) return;
     
-    const boardTags = Object.keys(BOARDS);
+    const boardTags = Object.keys(BOARDS).filter(tag => !BOARDS[tag].hidden);
     const links = boardTags.map(tag => 
         `<a href="board.html?board=${tag}" class="nav-board-link" data-testid="nav-board-${tag}">/${tag}/</a>`
     ).join(' ');
