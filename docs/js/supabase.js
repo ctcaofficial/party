@@ -88,6 +88,7 @@ async function fetchThread(threadId) {
         .from('replies')
         .select('*')
         .eq('thread_id', threadId)
+        .eq('is_deleted', false)
         .order('created_at', { ascending: true });
     
     if (repliesError) {
@@ -110,6 +111,7 @@ async function fetchLatestReplies(threadId, limit = REPLIES_SHOWN_IN_PREVIEW) {
         .from('replies')
         .select('*')
         .eq('thread_id', threadId)
+        .eq('is_deleted', false)
         .order('created_at', { ascending: false })
         .limit(limit);
     
