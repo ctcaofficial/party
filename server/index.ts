@@ -2,9 +2,14 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import path from "path";
 
 const app = express();
 const httpServer = createServer(app);
+
+// Serve the static HTML/CSS/JS files from docs folder
+const docsPath = path.resolve(process.cwd(), "docs");
+app.use(express.static(docsPath));
 
 declare module "http" {
   interface IncomingMessage {
@@ -70,15 +75,10 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (process.env.NODE_ENV === "production") {
-    serveStatic(app);
-  } else {
-    const { setupVite } = await import("./vite");
-    await setupVite(httpServer, app);
-  }
+  // Serve static docs folder - fallback to index.html for SPA routing
+  app.get("*", (_req, res) => {
+    res.sendFile(path.resolve(docsPath, "index.html"));
+  });
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
   // Other ports are firewalled. Default to 5000 if not specified.

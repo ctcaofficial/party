@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog - CTCA Party</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="board-header">
+            <div class="board-title">
+                <h1>CTCA Party</h1>
+                <span class="board-subtitle">/b/ - Random</span>
+            </div>
+            <nav class="board-nav">
+                <a href="index.html" class="nav-link" data-testid="link-index">[Index]</a>
+                <a href="catalog.html" class="nav-link active" data-testid="link-catalog">[Catalog]</a>
+            </nav>
+        </header>
+
+        <hr class="board-divider">
+
+        <!-- Catalog Grid -->
+        <div class="catalog-grid" id="catalogGrid" data-testid="catalog-grid">
+            <div class="loading" id="loading">Loading catalog...</div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="board-footer">
+            <hr class="board-divider">
+            <p>CTCA Party - Anonymous Imageboard</p>
+        </footer>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div class="lightbox" id="lightbox" data-testid="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img class="lightbox-image" id="lightboxImage" src="" alt="Full size image">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/catalog.js"></script>
+</body>
+</html>

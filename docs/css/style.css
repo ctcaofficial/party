@@ -1,0 +1,665 @@
+/* CTCA Party - 4chan-style Imageboard Stylesheet */
+
+/* CSS Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Root Variables - Classic 4chan color scheme */
+:root {
+    --bg-color: #ffffee;
+    --bg-alt: #f0e0d6;
+    --bg-post: #f0e0d6;
+    --bg-highlight: #d6bad7;
+    --border-color: #d9bfb7;
+    --text-color: #800000;
+    --text-secondary: #707070;
+    --link-color: #0000ee;
+    --link-hover: #dd0000;
+    --greentext-color: #789922;
+    --quote-color: #d00;
+    --name-color: #117743;
+    --subject-color: #0f0c5d;
+    --post-number-color: #800000;
+    --font-sans: Arial, Helvetica, sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
+}
+
+/* Base Styles */
+html {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: underline;
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+/* Page Wrapper */
+.page-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px;
+}
+
+/* Header */
+.board-header {
+    text-align: center;
+    padding: 8px 0;
+    background: var(--bg-alt);
+    border: 1px solid var(--border-color);
+    margin-bottom: 8px;
+}
+
+.board-title h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 4px;
+    font-family: 'Tahoma', var(--font-sans);
+    letter-spacing: -1px;
+}
+
+.board-subtitle {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.board-nav {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.nav-link {
+    font-size: 12px;
+    text-decoration: none;
+    color: var(--link-color);
+    padding: 2px 6px;
+}
+
+.nav-link:hover {
+    color: var(--link-hover);
+}
+
+.nav-link.active {
+    font-weight: bold;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    font-size: 12px;
+    padding: 4px 8px;
+    color: var(--text-secondary);
+}
+
+.breadcrumb a {
+    color: var(--link-color);
+}
+
+/* Dividers */
+.board-divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 8px 0;
+}
+
+/* Post Form */
+.post-form-container {
+    background: var(--bg-alt);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.toggle-form-btn {
+    background: none;
+    border: none;
+    color: var(--link-color);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: var(--font-sans);
+}
+
+.toggle-form-btn:hover {
+    color: var(--link-hover);
+}
+
+.post-form {
+    margin-top: 8px;
+}
+
+.form-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 6px;
+    gap: 8px;
+}
+
+.form-row label {
+    width: 60px;
+    font-size: 12px;
+    font-weight: bold;
+    padding-top: 4px;
+    flex-shrink: 0;
+}
+
+.form-row input[type="text"],
+.form-row input[type="file"],
+.form-row textarea {
+    flex: 1;
+    max-width: 400px;
+    padding: 4px 6px;
+    font-size: 12px;
+    font-family: var(--font-sans);
+    border: 1px solid var(--border-color);
+    background: #fff;
+}
+
+.form-row textarea {
+    resize: vertical;
+    font-family: var(--font-mono);
+}
+
+.form-row input[type="file"] {
+    padding: 2px;
+    font-size: 11px;
+}
+
+.file-info {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-left: 8px;
+}
+
+.submit-btn {
+    background: linear-gradient(to bottom, #fff 0%, #ddd 100%);
+    border: 1px solid #aaa;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+}
+
+.submit-btn:hover {
+    background: linear-gradient(to bottom, #fff 0%, #ccc 100%);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Reply Form */
+.reply-form-container {
+    background: var(--bg-alt);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    margin-top: 16px;
+}
+
+.reply-form-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+/* Thread List */
+.thread-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.loading {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Thread Preview (on index) */
+.thread-preview {
+    background: var(--bg-post);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    overflow: hidden;
+}
+
+.thread-op {
+    display: flex;
+    gap: 8px;
+}
+
+.thread-image-container {
+    flex-shrink: 0;
+}
+
+.thread-thumb {
+    max-width: 150px;
+    max-height: 150px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+}
+
+.thread-thumb:hover {
+    opacity: 0.8;
+}
+
+.thread-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.thread-meta {
+    font-size: 11px;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+}
+
+.post-subject {
+    color: var(--subject-color);
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.post-name {
+    color: var(--name-color);
+    font-weight: bold;
+}
+
+.post-date {
+    color: var(--text-secondary);
+}
+
+.post-number {
+    color: var(--post-number-color);
+    text-decoration: none;
+}
+
+.post-number:hover {
+    color: var(--link-hover);
+}
+
+.poster-id {
+    background: #eee;
+    padding: 0 4px;
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+}
+
+.thread-message {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 4px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.thread-message .greentext {
+    color: var(--greentext-color);
+}
+
+.thread-message .quotelink {
+    color: var(--quote-color);
+    text-decoration: underline;
+}
+
+.thread-stats {
+    font-size: 11px;
+    margin-top: 8px;
+    color: var(--text-secondary);
+}
+
+.thread-stats a {
+    color: var(--link-color);
+}
+
+/* Thread Actions */
+.thread-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.action-link {
+    font-size: 12px;
+    color: var(--link-color);
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    padding: 0;
+}
+
+.action-link:hover {
+    color: var(--link-hover);
+}
+
+.refresh-btn {
+    text-decoration: underline;
+}
+
+/* Thread View (Full) */
+.thread-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.post {
+    background: var(--bg-post);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.post.op-post {
+    background: var(--bg-post);
+}
+
+.post.reply-post {
+    margin-left: 24px;
+    background: var(--bg-alt);
+}
+
+.post-image-container {
+    flex-shrink: 0;
+}
+
+.post-thumb {
+    max-width: 125px;
+    max-height: 125px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+}
+
+.post-thumb:hover {
+    opacity: 0.8;
+}
+
+.post-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.post-header {
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.post-message {
+    font-size: 13px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.file-info-line {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+/* Catalog Grid */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+}
+
+.catalog-item {
+    background: var(--bg-post);
+    border: 1px solid var(--border-color);
+    padding: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.catalog-item:hover {
+    background: var(--bg-highlight);
+}
+
+.catalog-thumb {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    margin-bottom: 4px;
+}
+
+.catalog-no-image {
+    width: 150px;
+    height: 150px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 11px;
+    border: 1px solid var(--border-color);
+    margin: 0 auto 4px;
+}
+
+.catalog-stats {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+.catalog-subject {
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--subject-color);
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.catalog-teaser {
+    font-size: 10px;
+    color: var(--text-color);
+    max-height: 48px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* Lightbox */
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    color: #fff;
+    font-size: 32px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.lightbox-close:hover {
+    color: #ccc;
+}
+
+.lightbox-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 16px 0;
+    font-size: 12px;
+}
+
+.pagination a,
+.pagination span {
+    padding: 4px 8px;
+    text-decoration: none;
+}
+
+.pagination a {
+    color: var(--link-color);
+}
+
+.pagination a:hover {
+    color: var(--link-hover);
+}
+
+.pagination .current {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Footer */
+.board-footer {
+    text-align: center;
+    padding: 8px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--text-secondary);
+}
+
+.empty-state h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+/* Error State */
+.error-state {
+    text-align: center;
+    padding: 24px;
+    color: #c00;
+    background: #fee;
+    border: 1px solid #c00;
+    margin: 16px 0;
+}
+
+/* Sticky Badge */
+.sticky-badge {
+    background: #789;
+    color: #fff;
+    font-size: 10px;
+    padding: 1px 4px;
+    margin-left: 4px;
+    border-radius: 2px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .page-wrapper {
+        padding: 4px;
+    }
+
+    .thread-op {
+        flex-direction: column;
+    }
+
+    .thread-thumb {
+        max-width: 100%;
+        max-height: 200px;
+    }
+
+    .post {
+        flex-direction: column;
+    }
+
+    .post.reply-post {
+        margin-left: 8px;
+    }
+
+    .post-thumb {
+        max-width: 100%;
+        max-height: 150px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .form-row label {
+        width: auto;
+    }
+
+    .form-row input[type="text"],
+    .form-row input[type="file"],
+    .form-row textarea {
+        max-width: 100%;
+    }
+
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .catalog-thumb,
+    .catalog-no-image {
+        width: 100%;
+        height: 120px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .post-form-container,
+    .reply-form-container,
+    .lightbox,
+    .board-nav,
+    .thread-actions {
+        display: none !important;
+    }
+}

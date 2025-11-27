@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thread - CTCA Party</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="board-header">
+            <div class="board-title">
+                <h1>CTCA Party</h1>
+                <span class="board-subtitle">/b/ - Random</span>
+            </div>
+            <nav class="board-nav">
+                <a href="index.html" class="nav-link" data-testid="link-index">[Index]</a>
+                <a href="catalog.html" class="nav-link" data-testid="link-catalog">[Catalog]</a>
+            </nav>
+        </header>
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb" data-testid="breadcrumb">
+            <a href="index.html">/b/</a> &gt; <span id="threadSubject">Thread</span>
+        </div>
+
+        <hr class="board-divider">
+
+        <!-- Thread Content -->
+        <div class="thread-container" id="threadContainer" data-testid="thread-container">
+            <div class="loading" id="loading">Loading thread...</div>
+        </div>
+
+        <!-- Reply Form -->
+        <div class="reply-form-container" id="replyFormContainer" style="display: none;">
+            <h3 class="reply-form-title">Post a Reply</h3>
+            <form class="post-form reply-form" id="replyForm">
+                <div class="form-row">
+                    <label for="replyName">Name</label>
+                    <input type="text" id="replyName" name="replyName" placeholder="Anonymous" data-testid="input-reply-name">
+                </div>
+                <div class="form-row">
+                    <label for="replyMessage">Comment</label>
+                    <textarea id="replyMessage" name="replyMessage" rows="5" placeholder="Your reply..." required data-testid="input-reply-message"></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="replyImage">File</label>
+                    <input type="file" id="replyImage" name="replyImage" accept="image/*" data-testid="input-reply-image">
+                    <span class="file-info" id="replyFileInfo"></span>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="submit-btn" id="replySubmitBtn" data-testid="button-submit-reply">Post Reply</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer class="board-footer">
+            <hr class="board-divider">
+            <div class="thread-actions">
+                <a href="index.html" class="action-link" data-testid="link-return">[Return]</a>
+                <a href="catalog.html" class="action-link" data-testid="link-catalog-bottom">[Catalog]</a>
+                <button class="action-link refresh-btn" id="refreshBtn" data-testid="button-refresh">[Refresh]</button>
+            </div>
+            <p>CTCA Party - Anonymous Imageboard</p>
+        </footer>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div class="lightbox" id="lightbox" data-testid="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img class="lightbox-image" id="lightboxImage" src="" alt="Full size image">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/thread.js"></script>
+</body>
+</html>
