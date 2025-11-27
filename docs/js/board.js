@@ -1,17 +1,65 @@
-// Thread Listing Page (index.html)
+// Board Page (board.html) - Thread Listing for a specific board
 
 document.addEventListener('DOMContentLoaded', async () => {
+    const board = getCurrentBoard();
+    
+    // Setup page
+    setupBoardHeader(board);
+    setupNavigation(board);
     setupLightbox();
     setupFileInput('imageFile', 'fileInfo');
-    setupPostForm();
-    await loadThreads();
-    setupRealtimeUpdates();
+    setupPostForm(board);
+    await loadThreads(board);
+    setupRealtimeUpdates(board);
 });
+
+/**
+ * Setup board header with board info
+ */
+function setupBoardHeader(board) {
+    const info = getBoardInfo(board);
+    const boardTitle = document.getElementById('boardTitle');
+    const boardSubtitle = document.getElementById('boardSubtitle');
+    
+    document.title = `/${board}/ - ${info.name} - CTCA Party`;
+    boardTitle.textContent = SITE_NAME;
+    boardSubtitle.textContent = `/${board}/ - ${info.name}`;
+}
+
+/**
+ * Setup navigation links
+ */
+function setupNavigation(board) {
+    // Update nav links
+    const indexLink = document.getElementById('indexLink');
+    const catalogLink = document.getElementById('catalogLink');
+    
+    indexLink.href = `board.html?board=${board}`;
+    catalogLink.href = `catalog.html?board=${board}`;
+    
+    // Build top nav with board links
+    buildTopNav();
+}
+
+/**
+ * Build top navigation bar with board links
+ */
+function buildTopNav() {
+    const navBoards = document.getElementById('navBoards');
+    if (!navBoards) return;
+    
+    const boardTags = Object.keys(BOARDS);
+    const links = boardTags.map(tag => 
+        `<a href="board.html?board=${tag}" class="nav-board-link" data-testid="nav-board-${tag}">/${tag}/</a>`
+    ).join(' ');
+    
+    navBoards.innerHTML = links;
+}
 
 /**
  * Setup post form toggle and submission
  */
-function setupPostForm() {
+function setupPostForm(board) {
     const toggleBtn = document.getElementById('toggleFormBtn');
     const postForm = document.getElementById('postForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -44,11 +92,12 @@ function setupPostForm() {
             const thread = await createThread({
                 subject,
                 message,
-                posterName
+                posterName,
+                board
             }, imageFile);
             
             // Redirect to new thread
-            window.location.href = `thread.html?id=${thread.id}`;
+            window.location.href = `thread.html?board=${board}&id=${thread.id}`;
         } catch (error) {
             alert('Error creating thread. Please try again.');
             console.error(error);
@@ -59,18 +108,18 @@ function setupPostForm() {
 }
 
 /**
- * Load and display threads
+ * Load and display threads for this board
  */
-async function loadThreads() {
+async function loadThreads(board) {
     const threadList = document.getElementById('threadList');
     const pagination = document.getElementById('pagination');
     const currentPage = getPageFromUrl();
     
     try {
-        const { threads, total } = await fetchThreads(currentPage);
+        const { threads, total } = await fetchThreads(currentPage, THREADS_PER_PAGE, board);
         
         if (threads.length === 0) {
-            showEmpty(threadList, 'No threads yet', 'Be the first to start a thread!');
+            showEmpty(threadList, 'No threads yet', 'Be the first to start a thread on this board!');
             return;
         }
         
@@ -79,14 +128,14 @@ async function loadThreads() {
         
         for (const thread of threads) {
             const replies = await fetchLatestReplies(thread.id);
-            html += renderThreadPreview(thread, replies);
+            html += renderThreadPreview(thread, replies, board);
         }
         
         threadList.innerHTML = html;
         setupImageClicks(threadList);
         
         // Render pagination
-        pagination.innerHTML = generatePagination(currentPage, total, THREADS_PER_PAGE);
+        pagination.innerHTML = generateBoardPagination(currentPage, total, THREADS_PER_PAGE, board);
         
     } catch (error) {
         showError(threadList, 'Error loading threads. Please refresh the page.');
@@ -97,7 +146,7 @@ async function loadThreads() {
 /**
  * Render a thread preview with latest replies
  */
-function renderThreadPreview(thread, replies) {
+function renderThreadPreview(thread, replies, board) {
     const hasImage = thread.image_url;
     const omittedReplies = Math.max(0, thread.reply_count - replies.length);
     const omittedImages = Math.max(0, thread.image_count - replies.filter(r => r.image_url).length - (hasImage ? 1 : 0));
@@ -128,12 +177,12 @@ function renderThreadPreview(thread, replies) {
                         <span class="post-name">${escapeHtml(thread.poster_name)}</span>
                         <span class="poster-id">ID: ${thread.poster_id}</span>
                         <span class="post-date">${formatDate(thread.created_at)}</span>
-                        <a href="thread.html?id=${thread.id}" class="post-number" data-testid="link-thread-${thread.id}">No.${thread.id}</a>
+                        <a href="thread.html?board=${board}&id=${thread.id}" class="post-number" data-testid="link-thread-${thread.id}">No.${thread.id}</a>
                     </div>
                     <div class="thread-message">${parseMessage(thread.message)}</div>
                     <div class="thread-stats">
                         ${thread.reply_count} replies and ${thread.image_count} images${omittedReplies > 0 ? `, ${omittedReplies} replies omitted` : ''}.
-                        <a href="thread.html?id=${thread.id}" data-testid="link-reply-${thread.id}">[Reply]</a>
+                        <a href="thread.html?board=${board}&id=${thread.id}" data-testid="link-reply-${thread.id}">[Reply]</a>
                     </div>
                 </div>
             </div>
@@ -189,12 +238,49 @@ function renderReplyPreview(reply) {
 }
 
 /**
- * Setup real-time updates
+ * Generate pagination with board parameter
  */
-function setupRealtimeUpdates() {
+function generateBoardPagination(currentPage, totalItems, itemsPerPage, board) {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    
+    if (totalPages <= 1) return '';
+    
+    let html = '';
+    
+    // Previous
+    if (currentPage > 1) {
+        html += `<a href="board.html?board=${board}&page=${currentPage - 1}" data-testid="link-prev-page">[Previous]</a>`;
+    }
+    
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === currentPage) {
+            html += `<span class="current">[${i}]</span>`;
+        } else {
+            html += `<a href="board.html?board=${board}&page=${i}" data-testid="link-page-${i}">[${i}]</a>`;
+        }
+    }
+    
+    // Next
+    if (currentPage < totalPages) {
+        html += `<a href="board.html?board=${board}&page=${currentPage + 1}" data-testid="link-next-page">[Next]</a>`;
+    }
+    
+    return html;
+}
+
+/**
+ * Setup real-time updates for this board
+ */
+function setupRealtimeUpdates(board) {
     subscribeToThreads((payload) => {
         console.log('Thread update:', payload);
-        // Reload threads on any change
-        loadThreads();
+        // Only reload if the update is for this board
+        if (payload.new && payload.new.board === board) {
+            loadThreads(board);
+        } else if (!payload.new || !payload.new.board) {
+            // Fallback - reload anyway
+            loadThreads(board);
+        }
     });
 }

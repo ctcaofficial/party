@@ -31,11 +31,12 @@ initSupabase();
 // Database API Functions
 
 /**
- * Fetch all threads with pagination
+ * Fetch all threads with pagination for a specific board
  */
-async function fetchThreads(page = 1, limit = THREADS_PER_PAGE) {
+async function fetchThreads(page = 1, limit = THREADS_PER_PAGE, board = 'b') {
     if (!isConfigured) {
-        return { threads: getDemoThreads(), total: 3 };
+        const demoThreads = getDemoThreads(board);
+        return { threads: demoThreads, total: demoThreads.length };
     }
     
     const offset = (page - 1) * limit;
@@ -43,6 +44,7 @@ async function fetchThreads(page = 1, limit = THREADS_PER_PAGE) {
     const { data, error, count } = await supabaseClient
         .from('threads')
         .select('*', { count: 'exact' })
+        .eq('board', board)
         .order('is_sticky', { ascending: false })
         .order('bumped_at', { ascending: false })
         .range(offset, offset + limit - 1);
@@ -60,9 +62,12 @@ async function fetchThreads(page = 1, limit = THREADS_PER_PAGE) {
  */
 async function fetchThread(threadId) {
     if (!isConfigured) {
-        const demoThread = getDemoThreads().find(t => t.id === threadId);
-        if (demoThread) {
-            return { ...demoThread, replies: getDemoReplies(threadId) };
+        // Search all boards for demo thread
+        for (const board of Object.keys(BOARDS)) {
+            const demoThread = getDemoThreads(board).find(t => t.id === threadId);
+            if (demoThread) {
+                return { ...demoThread, replies: getDemoReplies(threadId) };
+            }
         }
         throw new Error('Thread not found');
     }
@@ -135,6 +140,7 @@ async function createThread(threadData, imageFile) {
     const { data, error } = await supabaseClient
         .from('threads')
         .insert([{
+            board: threadData.board || 'b',
             subject: threadData.subject,
             message: threadData.message,
             poster_name: threadData.posterName || 'Anonymous',
@@ -336,60 +342,109 @@ function unsubscribe(subscription) {
 }
 
 // Demo data for when Supabase is not configured
-function getDemoThreads() {
-    return [
-        {
-            id: 1,
-            subject: 'Welcome to CTCA Party!',
-            message: 'This is a demo thread. Configure Supabase to enable full functionality.\n\n>be me\n>creating an imageboard\n>feels good',
-            poster_name: 'Anonymous',
-            poster_id: 'DEMO1234',
-            image_url: null,
-            image_name: null,
-            image_size: null,
-            image_width: null,
-            image_height: null,
-            reply_count: 2,
-            image_count: 0,
-            is_sticky: true,
-            bumped_at: new Date().toISOString(),
-            created_at: new Date(Date.now() - 3600000).toISOString()
-        },
-        {
-            id: 2,
-            subject: 'How to set up Supabase',
-            message: 'Follow the instructions in SETUP.md to configure your Supabase project.\n\n1. Create tables using schema.sql\n2. Create storage bucket\n3. Update config.js with your credentials',
-            poster_name: 'Anonymous',
-            poster_id: 'DEMO5678',
-            image_url: null,
-            image_name: null,
-            image_size: null,
-            image_width: null,
-            image_height: null,
-            reply_count: 1,
-            image_count: 0,
-            is_sticky: false,
-            bumped_at: new Date(Date.now() - 1800000).toISOString(),
-            created_at: new Date(Date.now() - 7200000).toISOString()
-        },
-        {
-            id: 3,
-            subject: 'Test Thread',
-            message: '>testing greentext\n\nThis is a test thread to show off the UI styling.',
-            poster_name: 'Anon',
-            poster_id: 'TEST9ABC',
-            image_url: null,
-            image_name: null,
-            image_size: null,
-            image_width: null,
-            image_height: null,
-            reply_count: 0,
-            image_count: 0,
-            is_sticky: false,
-            bumped_at: new Date(Date.now() - 3600000).toISOString(),
-            created_at: new Date(Date.now() - 10800000).toISOString()
-        }
-    ];
+function getDemoThreads(board) {
+    const allDemoThreads = {
+        'b': [
+            {
+                id: 1,
+                board: 'b',
+                subject: 'Welcome to /b/ - Random!',
+                message: 'This is a demo thread. Configure Supabase to enable full functionality.\n\n>be me\n>creating an imageboard\n>feels good',
+                poster_name: 'Anonymous',
+                poster_id: 'DEMO1234',
+                image_url: null,
+                image_name: null,
+                image_size: null,
+                image_width: null,
+                image_height: null,
+                reply_count: 2,
+                image_count: 0,
+                is_sticky: true,
+                bumped_at: new Date().toISOString(),
+                created_at: new Date(Date.now() - 3600000).toISOString()
+            },
+            {
+                id: 2,
+                board: 'b',
+                subject: 'Random Thread',
+                message: '>testing greentext\n\nThis is a test thread to show off the UI styling.',
+                poster_name: 'Anon',
+                poster_id: 'TEST9ABC',
+                image_url: null,
+                image_name: null,
+                image_size: null,
+                image_width: null,
+                image_height: null,
+                reply_count: 0,
+                image_count: 0,
+                is_sticky: false,
+                bumped_at: new Date(Date.now() - 3600000).toISOString(),
+                created_at: new Date(Date.now() - 10800000).toISOString()
+            }
+        ],
+        'g': [
+            {
+                id: 100,
+                board: 'g',
+                subject: 'What distro do you use?',
+                message: 'I use Arch btw.\n\n>inb4 gentoo users',
+                poster_name: 'Anonymous',
+                poster_id: 'TECH1234',
+                image_url: null,
+                image_name: null,
+                image_size: null,
+                image_width: null,
+                image_height: null,
+                reply_count: 1,
+                image_count: 0,
+                is_sticky: false,
+                bumped_at: new Date().toISOString(),
+                created_at: new Date(Date.now() - 7200000).toISOString()
+            }
+        ],
+        'a': [
+            {
+                id: 200,
+                board: 'a',
+                subject: 'Anime of the Season',
+                message: 'What are you watching this season anons?\n\n>tfw no good isekai',
+                poster_name: 'Anonymous',
+                poster_id: 'WEEB5678',
+                image_url: null,
+                image_name: null,
+                image_size: null,
+                image_width: null,
+                image_height: null,
+                reply_count: 0,
+                image_count: 0,
+                is_sticky: false,
+                bumped_at: new Date().toISOString(),
+                created_at: new Date(Date.now() - 1800000).toISOString()
+            }
+        ],
+        'v': [
+            {
+                id: 300,
+                board: 'v',
+                subject: 'Best RPGs of all time',
+                message: 'List your top 5 RPGs.\n\n1. Chrono Trigger\n2. Final Fantasy VI\n3. Baldurs Gate 2\n4. Planescape Torment\n5. Dark Souls',
+                poster_name: 'Anonymous',
+                poster_id: 'GAMER999',
+                image_url: null,
+                image_name: null,
+                image_size: null,
+                image_width: null,
+                image_height: null,
+                reply_count: 0,
+                image_count: 0,
+                is_sticky: false,
+                bumped_at: new Date().toISOString(),
+                created_at: new Date(Date.now() - 5400000).toISOString()
+            }
+        ]
+    };
+    
+    return allDemoThreads[board] || [];
 }
 
 function getDemoReplies(threadId) {
@@ -423,20 +478,20 @@ function getDemoReplies(threadId) {
             }
         ];
     }
-    if (threadId === 2) {
+    if (threadId === 100) {
         return [
             {
-                id: 201,
-                thread_id: 2,
-                message: 'Thanks for the guide!',
+                id: 1001,
+                thread_id: 100,
+                message: '>Arch\nI use Gentoo. Compile everything.',
                 poster_name: 'Anonymous',
-                poster_id: 'GUIDE001',
+                poster_id: 'GENTOO01',
                 image_url: null,
                 image_name: null,
                 image_size: null,
                 image_width: null,
                 image_height: null,
-                created_at: new Date(Date.now() - 600000).toISOString()
+                created_at: new Date(Date.now() - 3600000).toISOString()
             }
         ];
     }

@@ -653,13 +653,142 @@ a:hover {
     }
 }
 
+/* Top Navigation Bar */
+.top-nav {
+    background: var(--bg-alt);
+    border: 1px solid var(--border-color);
+    padding: 4px 8px;
+    font-size: 11px;
+    margin-bottom: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
+
+.nav-home {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.nav-boards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.nav-board-link {
+    text-decoration: none;
+    color: var(--link-color);
+    padding: 0 2px;
+}
+
+.nav-board-link:hover {
+    color: var(--link-hover);
+}
+
+/* Board List (Home Page) */
+.site-header {
+    margin-bottom: 16px;
+}
+
+.site-header h1 {
+    font-size: 36px;
+}
+
+.boards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.board-category {
+    background: var(--bg-alt);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+}
+
+.category-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.board-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.board-link {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 8px;
+    text-decoration: none;
+    background: var(--bg-color);
+    border: 1px solid transparent;
+    transition: background 0.1s, border-color 0.1s;
+}
+
+.board-link:hover {
+    background: var(--bg-highlight);
+    border-color: var(--border-color);
+}
+
+.board-tag {
+    font-family: var(--font-mono);
+    font-weight: bold;
+    color: var(--subject-color);
+    min-width: 50px;
+}
+
+.board-name {
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 150px;
+}
+
+.board-desc {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* Responsive board list */
+@media (max-width: 600px) {
+    .board-link {
+        flex-wrap: wrap;
+    }
+    
+    .board-name {
+        min-width: auto;
+    }
+    
+    .board-desc {
+        flex-basis: 100%;
+        margin-left: 58px;
+    }
+    
+    .top-nav {
+        font-size: 10px;
+    }
+    
+    .nav-board-link {
+        padding: 0 1px;
+    }
+}
+
 /* Print Styles */
 @media print {
     .post-form-container,
     .reply-form-container,
     .lightbox,
     .board-nav,
-    .thread-actions {
+    .thread-actions,
+    .top-nav {
         display: none !important;
     }
 }

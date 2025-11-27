@@ -8,21 +8,27 @@
 </head>
 <body>
     <div class="page-wrapper">
+        <!-- Board Navigation Bar -->
+        <nav class="top-nav" id="topNav" data-testid="top-nav">
+            <a href="index.html" class="nav-home" data-testid="link-home">[Home]</a>
+            <span class="nav-boards" id="navBoards"></span>
+        </nav>
+
         <!-- Header -->
         <header class="board-header">
             <div class="board-title">
-                <h1>CTCA Party</h1>
-                <span class="board-subtitle">/b/ - Random</span>
+                <h1 id="boardTitle">CTCA Party</h1>
+                <span class="board-subtitle" id="boardSubtitle">/b/ - Random</span>
             </div>
             <nav class="board-nav">
-                <a href="index.html" class="nav-link" data-testid="link-index">[Index]</a>
-                <a href="catalog.html" class="nav-link" data-testid="link-catalog">[Catalog]</a>
+                <a href="#" class="nav-link" id="indexLink" data-testid="link-index">[Index]</a>
+                <a href="#" class="nav-link" id="catalogLink" data-testid="link-catalog">[Catalog]</a>
             </nav>
         </header>
 
         <!-- Breadcrumb -->
         <div class="breadcrumb" data-testid="breadcrumb">
-            <a href="index.html">/b/</a> &gt; <span id="threadSubject">Thread</span>
+            <a href="#" id="boardLink">/b/</a> &gt; <span id="threadSubject">Thread</span>
         </div>
 
         <hr class="board-divider">
@@ -59,8 +65,8 @@
         <footer class="board-footer">
             <hr class="board-divider">
             <div class="thread-actions">
-                <a href="index.html" class="action-link" data-testid="link-return">[Return]</a>
-                <a href="catalog.html" class="action-link" data-testid="link-catalog-bottom">[Catalog]</a>
+                <a href="#" class="action-link" id="returnLink" data-testid="link-return">[Return]</a>
+                <a href="#" class="action-link" id="catalogLinkBottom" data-testid="link-catalog-bottom">[Catalog]</a>
                 <button class="action-link refresh-btn" id="refreshBtn" data-testid="button-refresh">[Refresh]</button>
             </div>
             <p>CTCA Party - Anonymous Imageboard</p>

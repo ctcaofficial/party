@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTCA Party</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Board Navigation Bar -->
+        <nav class="top-nav" id="topNav" data-testid="top-nav">
+            <a href="index.html" class="nav-home" data-testid="link-home">[Home]</a>
+            <span class="nav-boards" id="navBoards"></span>
+        </nav>
+
+        <!-- Header -->
+        <header class="board-header">
+            <div class="board-title">
+                <h1 id="boardTitle">CTCA Party</h1>
+                <span class="board-subtitle" id="boardSubtitle">/b/ - Random</span>
+            </div>
+            <nav class="board-nav">
+                <a href="#" class="nav-link active" id="indexLink" data-testid="link-index">[Index]</a>
+                <a href="#" class="nav-link" id="catalogLink" data-testid="link-catalog">[Catalog]</a>
+            </nav>
+        </header>
+
+        <!-- Post Form -->
+        <div class="post-form-container">
+            <button class="toggle-form-btn" id="toggleFormBtn" data-testid="button-toggle-form">Start a New Thread</button>
+            <form class="post-form" id="postForm" style="display: none;">
+                <div class="form-row">
+                    <label for="posterName">Name</label>
+                    <input type="text" id="posterName" name="posterName" placeholder="Anonymous" data-testid="input-poster-name">
+                </div>
+                <div class="form-row">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="Thread subject" required data-testid="input-subject">
+                </div>
+                <div class="form-row">
+                    <label for="message">Comment</label>
+                    <textarea id="message" name="message" rows="6" placeholder="Your message here..." required data-testid="input-message"></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="imageFile">File</label>
+                    <input type="file" id="imageFile" name="imageFile" accept="image/*" data-testid="input-image">
+                    <span class="file-info" id="fileInfo"></span>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="submit-btn" id="submitBtn" data-testid="button-submit-thread">Post Thread</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Thread Listing -->
+        <hr class="board-divider">
+        
+        <div class="thread-list" id="threadList" data-testid="thread-list">
+            <div class="loading" id="loading">Loading threads...</div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination" data-testid="pagination"></div>
+
+        <!-- Footer -->
+        <footer class="board-footer">
+            <hr class="board-divider">
+            <p>CTCA Party - Anonymous Imageboard</p>
+        </footer>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div class="lightbox" id="lightbox" data-testid="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img class="lightbox-image" id="lightboxImage" src="" alt="Full size image">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/board.js"></script>
+</body>
+</html>

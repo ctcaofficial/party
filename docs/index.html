@@ -3,59 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CTCA Party - Imageboard</title>
+    <title>CTCA Party - Boards</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="page-wrapper">
         <!-- Header -->
-        <header class="board-header">
+        <header class="board-header site-header">
             <div class="board-title">
                 <h1>CTCA Party</h1>
-                <span class="board-subtitle">/b/ - Random</span>
+                <span class="board-subtitle">Choose a Board</span>
             </div>
-            <nav class="board-nav">
-                <a href="index.html" class="nav-link active" data-testid="link-index">[Index]</a>
-                <a href="catalog.html" class="nav-link" data-testid="link-catalog">[Catalog]</a>
-            </nav>
         </header>
 
-        <!-- Post Form -->
-        <div class="post-form-container">
-            <button class="toggle-form-btn" id="toggleFormBtn" data-testid="button-toggle-form">Start a New Thread</button>
-            <form class="post-form" id="postForm" style="display: none;">
-                <div class="form-row">
-                    <label for="posterName">Name</label>
-                    <input type="text" id="posterName" name="posterName" placeholder="Anonymous" data-testid="input-poster-name">
+        <!-- Board List -->
+        <div class="boards-container" id="boardsContainer" data-testid="boards-container">
+            <!-- Japanese Culture -->
+            <div class="board-category">
+                <h2 class="category-title">Japanese Culture</h2>
+                <div class="board-list">
+                    <a href="board.html?board=a" class="board-link" data-testid="link-board-a">
+                        <span class="board-tag">/a/</span>
+                        <span class="board-name">Anime & Manga</span>
+                        <span class="board-desc">Discussion of anime and manga</span>
+                    </a>
+                    <a href="board.html?board=c" class="board-link" data-testid="link-board-c">
+                        <span class="board-tag">/c/</span>
+                        <span class="board-name">Anime/Cute</span>
+                        <span class="board-desc">For images and discussions related to "cute" anime and manga</span>
+                    </a>
+                    <a href="board.html?board=jp" class="board-link" data-testid="link-board-jp">
+                        <span class="board-tag">/jp/</span>
+                        <span class="board-name">Otaku Culture</span>
+                        <span class="board-desc">Discussion of Japanese otaku culture</span>
+                    </a>
+                    <a href="board.html?board=m" class="board-link" data-testid="link-board-m">
+                        <span class="board-tag">/m/</span>
+                        <span class="board-name">Mecha</span>
+                        <span class="board-desc">Discussion of mecha anime and related topics</span>
+                    </a>
+                    <a href="board.html?board=w" class="board-link" data-testid="link-board-w">
+                        <span class="board-tag">/w/</span>
+                        <span class="board-name">Anime/Wallpapers</span>
+                        <span class="board-desc">Anime and manga wallpapers</span>
+                    </a>
                 </div>
-                <div class="form-row">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" placeholder="Thread subject" required data-testid="input-subject">
-                </div>
-                <div class="form-row">
-                    <label for="message">Comment</label>
-                    <textarea id="message" name="message" rows="6" placeholder="Your message here..." required data-testid="input-message"></textarea>
-                </div>
-                <div class="form-row">
-                    <label for="imageFile">File</label>
-                    <input type="file" id="imageFile" name="imageFile" accept="image/*" data-testid="input-image">
-                    <span class="file-info" id="fileInfo"></span>
-                </div>
-                <div class="form-row">
-                    <button type="submit" class="submit-btn" id="submitBtn" data-testid="button-submit-thread">Post Thread</button>
-                </div>
-            </form>
-        </div>
+            </div>
 
-        <!-- Thread Listing -->
-        <hr class="board-divider">
-        
-        <div class="thread-list" id="threadList" data-testid="thread-list">
-            <div class="loading" id="loading">Loading threads...</div>
-        </div>
+            <!-- Interests -->
+            <div class="board-category">
+                <h2 class="category-title">Interests</h2>
+                <div class="board-list">
+                    <a href="board.html?board=g" class="board-link" data-testid="link-board-g">
+                        <span class="board-tag">/g/</span>
+                        <span class="board-name">Technology</span>
+                        <span class="board-desc">Technology-related topics</span>
+                    </a>
+                    <a href="board.html?board=v" class="board-link" data-testid="link-board-v">
+                        <span class="board-tag">/v/</span>
+                        <span class="board-name">Video Games</span>
+                        <span class="board-desc">Video game discussion</span>
+                    </a>
+                    <a href="board.html?board=mu" class="board-link" data-testid="link-board-mu">
+                        <span class="board-tag">/mu/</span>
+                        <span class="board-name">Music</span>
+                        <span class="board-desc">Music discussion</span>
+                    </a>
+                    <a href="board.html?board=k" class="board-link" data-testid="link-board-k">
+                        <span class="board-tag">/k/</span>
+                        <span class="board-name">Weapons</span>
+                        <span class="board-desc">Discussion of firearms and other weapons</span>
+                    </a>
+                    <a href="board.html?board=o" class="board-link" data-testid="link-board-o">
+                        <span class="board-tag">/o/</span>
+                        <span class="board-name">Auto</span>
+                        <span class="board-desc">Automotive topics</span>
+                    </a>
+                    <a href="board.html?board=p" class="board-link" data-testid="link-board-p">
+                        <span class="board-tag">/p/</span>
+                        <span class="board-name">Photography</span>
+                        <span class="board-desc">Photography discussion</span>
+                    </a>
+                    <a href="board.html?board=t" class="board-link" data-testid="link-board-t">
+                        <span class="board-tag">/t/</span>
+                        <span class="board-name">Torrents</span>
+                        <span class="board-desc">Discussion of torrents and file sharing</span>
+                    </a>
+                    <a href="board.html?board=x" class="board-link" data-testid="link-board-x">
+                        <span class="board-tag">/x/</span>
+                        <span class="board-name">Paranormal</span>
+                        <span class="board-desc">Paranormal and conspiracy topics</span>
+                    </a>
+                </div>
+            </div>
 
-        <!-- Pagination -->
-        <div class="pagination" id="pagination" data-testid="pagination"></div>
+            <!-- Other -->
+            <div class="board-category">
+                <h2 class="category-title">Other</h2>
+                <div class="board-list">
+                    <a href="board.html?board=biz" class="board-link" data-testid="link-board-biz">
+                        <span class="board-tag">/biz/</span>
+                        <span class="board-name">Business & Finance</span>
+                        <span class="board-desc">Business and finance topics</span>
+                    </a>
+                    <a href="board.html?board=q" class="board-link" data-testid="link-board-q">
+                        <span class="board-tag">/q/</span>
+                        <span class="board-name">Questionable</span>
+                        <span class="board-desc">Questionable content</span>
+                    </a>
+                    <a href="board.html?board=b" class="board-link" data-testid="link-board-b">
+                        <span class="board-tag">/b/</span>
+                        <span class="board-name">Random</span>
+                        <span class="board-desc">Random content</span>
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- Footer -->
         <footer class="board-footer">
@@ -63,17 +126,5 @@
             <p>CTCA Party - Anonymous Imageboard</p>
         </footer>
     </div>
-
-    <!-- Image Lightbox -->
-    <div class="lightbox" id="lightbox" data-testid="lightbox">
-        <span class="lightbox-close" id="lightboxClose">&times;</span>
-        <img class="lightbox-image" id="lightboxImage" src="" alt="Full size image">
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/config.js"></script>
-    <script src="js/supabase.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/threads.js"></script>
 </body>
 </html>

@@ -1,15 +1,67 @@
 // Single Thread View Page (thread.html)
 
 let currentThread = null;
+let currentBoard = null;
 let replySubscription = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
+    currentBoard = getCurrentBoard();
+    
+    setupBoardHeader(currentBoard);
+    setupNavigation(currentBoard);
     setupLightbox();
     setupFileInput('replyImage', 'replyFileInfo');
     await loadThread();
     setupReplyForm();
     setupRefresh();
 });
+
+/**
+ * Setup board header with board info
+ */
+function setupBoardHeader(board) {
+    const info = getBoardInfo(board);
+    const boardTitle = document.getElementById('boardTitle');
+    const boardSubtitle = document.getElementById('boardSubtitle');
+    
+    boardTitle.textContent = SITE_NAME;
+    boardSubtitle.textContent = `/${board}/ - ${info.name}`;
+}
+
+/**
+ * Setup navigation links
+ */
+function setupNavigation(board) {
+    const indexLink = document.getElementById('indexLink');
+    const catalogLink = document.getElementById('catalogLink');
+    const returnLink = document.getElementById('returnLink');
+    const catalogLinkBottom = document.getElementById('catalogLinkBottom');
+    const boardLink = document.getElementById('boardLink');
+    
+    indexLink.href = `board.html?board=${board}`;
+    catalogLink.href = `catalog.html?board=${board}`;
+    returnLink.href = `board.html?board=${board}`;
+    catalogLinkBottom.href = `catalog.html?board=${board}`;
+    boardLink.href = `board.html?board=${board}`;
+    boardLink.textContent = `/${board}/`;
+    
+    buildTopNav();
+}
+
+/**
+ * Build top navigation bar with board links
+ */
+function buildTopNav() {
+    const navBoards = document.getElementById('navBoards');
+    if (!navBoards) return;
+    
+    const boardTags = Object.keys(BOARDS);
+    const links = boardTags.map(tag => 
+        `<a href="board.html?board=${tag}" class="nav-board-link" data-testid="nav-board-${tag}">/${tag}/</a>`
+    ).join(' ');
+    
+    navBoards.innerHTML = links;
+}
 
 /**
  * Load and display the thread
@@ -21,7 +73,7 @@ async function loadThread() {
     const threadSubject = document.getElementById('threadSubject');
     
     if (!threadId) {
-        showError(threadContainer, 'Thread not found. Please go back to the index.');
+        showError(threadContainer, 'Thread not found. Please go back to the board.');
         return;
     }
     
@@ -29,7 +81,7 @@ async function loadThread() {
         currentThread = await fetchThread(parseInt(threadId));
         
         // Update page title and breadcrumb
-        document.title = `${currentThread.subject} - CTCA Party`;
+        document.title = `${currentThread.subject} - /${currentBoard}/ - CTCA Party`;
         threadSubject.textContent = `Thread #${currentThread.id}`;
         
         // Render thread

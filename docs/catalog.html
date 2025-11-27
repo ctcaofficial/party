@@ -8,15 +8,21 @@
 </head>
 <body>
     <div class="page-wrapper">
+        <!-- Board Navigation Bar -->
+        <nav class="top-nav" id="topNav" data-testid="top-nav">
+            <a href="index.html" class="nav-home" data-testid="link-home">[Home]</a>
+            <span class="nav-boards" id="navBoards"></span>
+        </nav>
+
         <!-- Header -->
         <header class="board-header">
             <div class="board-title">
-                <h1>CTCA Party</h1>
-                <span class="board-subtitle">/b/ - Random</span>
+                <h1 id="boardTitle">CTCA Party</h1>
+                <span class="board-subtitle" id="boardSubtitle">/b/ - Random</span>
             </div>
             <nav class="board-nav">
-                <a href="index.html" class="nav-link" data-testid="link-index">[Index]</a>
-                <a href="catalog.html" class="nav-link active" data-testid="link-catalog">[Catalog]</a>
+                <a href="#" class="nav-link" id="indexLink" data-testid="link-index">[Index]</a>
+                <a href="#" class="nav-link active" id="catalogLink" data-testid="link-catalog">[Catalog]</a>
             </nav>
         </header>
 

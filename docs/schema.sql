@@ -4,6 +4,7 @@
 -- Create threads table
 CREATE TABLE IF NOT EXISTS threads (
     id BIGSERIAL PRIMARY KEY,
+    board TEXT NOT NULL DEFAULT 'b',
     subject TEXT NOT NULL,
     message TEXT NOT NULL,
     poster_name TEXT DEFAULT 'Anonymous',
@@ -36,8 +37,10 @@ CREATE TABLE IF NOT EXISTS replies (
 );
 
 -- Create indexes for performance
+CREATE INDEX IF NOT EXISTS idx_threads_board ON threads(board);
 CREATE INDEX IF NOT EXISTS idx_threads_bumped_at ON threads(bumped_at DESC);
 CREATE INDEX IF NOT EXISTS idx_threads_sticky ON threads(is_sticky DESC);
+CREATE INDEX IF NOT EXISTS idx_threads_board_bumped ON threads(board, bumped_at DESC);
 CREATE INDEX IF NOT EXISTS idx_replies_thread_id ON replies(thread_id);
 CREATE INDEX IF NOT EXISTS idx_replies_created_at ON replies(created_at);
 
