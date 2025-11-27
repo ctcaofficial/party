@@ -4,30 +4,8 @@ let currentThread = null;
 let currentBoard = null;
 let replySubscription = null;
 
-function isAdminAuthenticated() {
-    const sessionData = sessionStorage.getItem('adminSession');
-    if (!sessionData) return false;
-    try {
-        const session = JSON.parse(sessionData);
-        return session.authenticated && session.expiry > Date.now();
-    } catch (e) {
-        return false;
-    }
-}
-
-function checkBoardAccess(board) {
-    const boardInfo = BOARDS[board];
-    if (boardInfo && boardInfo.hidden && !isAdminAuthenticated()) {
-        window.location.href = 'index.html';
-        return false;
-    }
-    return true;
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
     currentBoard = getCurrentBoard();
-    
-    if (!checkBoardAccess(currentBoard)) return;
     
     setupBoardHeader(currentBoard);
     setupNavigation(currentBoard);
@@ -109,8 +87,13 @@ async function loadThread() {
         // Render thread
         renderThread(currentThread);
         
-        // Show reply form
-        replyFormContainer.style.display = 'block';
+        // Show reply form only if thread is not locked
+        if (currentThread.is_locked) {
+            replyFormContainer.innerHTML = '<div class="thread-locked-notice">This thread is locked. No new replies can be posted.</div>';
+            replyFormContainer.style.display = 'block';
+        } else {
+            replyFormContainer.style.display = 'block';
+        }
         
         // Setup realtime updates
         setupRealtimeReplies(currentThread.id);
@@ -164,6 +147,7 @@ function renderOP(thread) {
             <div class="post-body">
                 <div class="post-header">
                     ${thread.is_sticky ? '<span class="sticky-badge">Sticky</span>' : ''}
+                    ${thread.is_locked ? '<span class="locked-badge">Locked</span>' : ''}
                     <span class="post-subject">${escapeHtml(thread.subject)}</span>
                     <span class="post-name">${escapeHtml(thread.poster_name)}</span>
                     <span class="poster-id">ID: ${thread.poster_id}</span>

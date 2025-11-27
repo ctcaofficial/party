@@ -7,19 +7,24 @@ CTCA Party is a 4chan-style anonymous imageboard built with pure HTML, CSS, and 
 ```
 docs/                    # Static files for GitHub Pages deployment
 ├── index.html          # Board index page (thread listings)
+├── board.html          # Board view page
 ├── thread.html         # Individual thread view
 ├── catalog.html        # Catalog grid view
+├── admin.html          # Admin login page (hidden)
+├── dashboard.html      # Admin dashboard
 ├── SETUP.md            # Setup instructions for Supabase
 ├── schema.sql          # Database schema for Supabase
 ├── css/
 │   └── style.css       # 4chan-style CSS
 └── js/
-    ├── config.js       # Supabase credentials (user must edit)
+    ├── config.js       # Board definitions and Supabase credentials
     ├── supabase.js     # Supabase client and API functions
     ├── utils.js        # Utility functions
-    ├── threads.js      # Board index page logic
+    ├── board.js        # Board page logic
     ├── thread.js       # Thread view page logic
-    └── catalog.js      # Catalog page logic
+    ├── catalog.js      # Catalog page logic
+    ├── admin.js        # Admin login logic
+    └── admin-dashboard.js  # Admin dashboard logic
 ```
 
 ## Features
@@ -31,7 +36,21 @@ docs/                    # Static files for GitHub Pages deployment
 - Catalog view with grid layout
 - Image lightbox for full-size viewing
 - Real-time updates via Supabase (when configured)
-- Demo mode with sample threads when Supabase not configured
+- CTCA board as a public community board
+
+## Admin Features
+- Admin login page at `/admin.html` (username: CTCA, password: drayfrick12)
+- Admin dashboard at `/dashboard.html` with:
+  - Board Management: View all boards, add new dynamic boards, edit/delete boards
+  - Thread Management: View all threads, sticky/unsticky, lock/unlock, delete/restore
+  - Moderation Panel: View stats, recent activity
+
+## Moderation Capabilities
+- Sticky threads: Pin important threads to top of board
+- Lock threads: Prevent new replies
+- Delete threads: Soft delete (can be restored)
+- Delete replies: Soft delete individual replies
+- Dynamic board creation through Supabase
 
 ## Running Locally
 The server serves static files from the `/docs` folder on port 5000.
@@ -42,10 +61,13 @@ The server serves static files from the `/docs` folder on port 5000.
 3. Create storage bucket `ctca-images` in Supabase
 4. Push to GitHub and enable Pages from `/docs` folder
 
-## Demo Mode
-When Supabase is not configured (default), the app runs in demo mode showing sample threads. This allows testing the UI without a backend.
-
 ## Tech Stack
 - Pure HTML5, CSS3, JavaScript (ES6+)
 - Supabase for database and storage
 - No build tools or frameworks required
+
+## Database Schema
+The schema includes:
+- `threads` table: board, subject, message, poster info, image data, is_sticky, is_locked, is_deleted
+- `replies` table: thread_id, message, poster info, image data, is_deleted
+- `boards` table: slug, name, description, category, is_hidden (for dynamic board management)

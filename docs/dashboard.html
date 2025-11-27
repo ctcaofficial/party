@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CTCA Party</title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="board-header">
+            <div class="board-title">
+                <h1>Admin Dashboard</h1>
+                <span class="board-subtitle">CTCA Party Management</span>
+            </div>
+            <nav class="board-nav">
+                <a href="index.html" class="nav-link" data-testid="link-home">[Home]</a>
+                <button class="nav-link" id="logoutBtn" data-testid="button-logout">[Logout]</button>
+            </nav>
+        </header>
+
+        <div class="admin-dashboard">
+            <nav class="admin-nav">
+                <button class="admin-nav-btn active" data-tab="boards" data-testid="tab-boards">Boards</button>
+                <button class="admin-nav-btn" data-tab="threads" data-testid="tab-threads">Threads</button>
+                <button class="admin-nav-btn" data-tab="moderation" data-testid="tab-moderation">Moderation</button>
+            </nav>
+
+            <div class="admin-content">
+                <div class="admin-panel" id="boardsPanel" data-testid="panel-boards">
+                    <div class="panel-header">
+                        <h2>Board Management</h2>
+                        <button class="action-btn" id="addBoardBtn" data-testid="button-add-board">+ Add Board</button>
+                    </div>
+                    <div class="panel-body">
+                        <table class="admin-table" id="boardsTable" data-testid="table-boards">
+                            <thead>
+                                <tr>
+                                    <th>Slug</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="boardsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-panel hidden" id="threadsPanel" data-testid="panel-threads">
+                    <div class="panel-header">
+                        <h2>Thread Management</h2>
+                        <div class="panel-filters">
+                            <select id="threadBoardFilter" data-testid="select-board-filter">
+                                <option value="">All Boards</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="admin-table" id="threadsTable" data-testid="table-threads">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Board</th>
+                                    <th>Subject</th>
+                                    <th>Replies</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="threadsTableBody"></tbody>
+                        </table>
+                        <div class="table-pagination" id="threadsPagination"></div>
+                    </div>
+                </div>
+
+                <div class="admin-panel hidden" id="moderationPanel" data-testid="panel-moderation">
+                    <div class="panel-header">
+                        <h2>Moderation Queue</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="moderation-stats">
+                            <div class="stat-card">
+                                <span class="stat-number" id="totalThreads">0</span>
+                                <span class="stat-label">Total Threads</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number" id="totalReplies">0</span>
+                                <span class="stat-label">Total Replies</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number" id="deletedItems">0</span>
+                                <span class="stat-label">Deleted Items</span>
+                            </div>
+                        </div>
+                        <h3>Recent Activity</h3>
+                        <div id="recentActivity" class="recent-activity"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal hidden" id="boardModal" data-testid="modal-board">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="boardModalTitle">Add Board</h3>
+                    <button class="modal-close" id="closeBoardModal">&times;</button>
+                </div>
+                <form id="boardForm" class="modal-form">
+                    <div class="form-group">
+                        <label for="boardSlug">Slug (e.g., "tech")</label>
+                        <input type="text" id="boardSlug" name="slug" required pattern="[a-z0-9]+" data-testid="input-board-slug">
+                    </div>
+                    <div class="form-group">
+                        <label for="boardName">Name</label>
+                        <input type="text" id="boardName" name="name" required data-testid="input-board-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="boardDescription">Description</label>
+                        <input type="text" id="boardDescription" name="description" data-testid="input-board-description">
+                    </div>
+                    <div class="form-group">
+                        <label for="boardCategory">Category</label>
+                        <select id="boardCategory" name="category" data-testid="select-board-category">
+                            <option value="Japanese Culture">Japanese Culture</option>
+                            <option value="Interests">Interests</option>
+                            <option value="Other" selected>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="cancelBoardBtn">Cancel</button>
+                        <button type="submit" class="btn-submit" data-testid="button-save-board">Save Board</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal hidden" id="confirmModal" data-testid="modal-confirm">
+            <div class="modal-content modal-small">
+                <div class="modal-header">
+                    <h3 id="confirmTitle">Confirm Action</h3>
+                </div>
+                <p id="confirmMessage"></p>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="confirmCancel">Cancel</button>
+                    <button type="button" class="btn-danger" id="confirmOk" data-testid="button-confirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="board-footer">
+            <hr class="board-divider">
+            <p>CTCA Party - Admin Dashboard</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorMsg = document.getElementById('errorMsg');
     
     if (isAdminAuthenticated()) {
-        window.location.href = 'board.html?board=ctca';
+        window.location.href = 'dashboard.html';
         return;
     }
     
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (validateCredentials(username, password)) {
             setAdminSession();
-            window.location.href = 'board.html?board=ctca';
+            window.location.href = 'dashboard.html';
         } else {
             errorMsg.textContent = 'Invalid credentials';
             errorMsg.style.display = 'block';

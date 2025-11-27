@@ -45,6 +45,7 @@ async function fetchThreads(page = 1, limit = THREADS_PER_PAGE, board = 'b') {
         .from('threads')
         .select('*', { count: 'exact' })
         .eq('board', board)
+        .eq('is_deleted', false)
         .order('is_sticky', { ascending: false })
         .order('bumped_at', { ascending: false })
         .range(offset, offset + limit - 1);

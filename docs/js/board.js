@@ -1,29 +1,7 @@
 // Board Page (board.html) - Thread Listing for a specific board
 
-function isAdminAuthenticated() {
-    const sessionData = sessionStorage.getItem('adminSession');
-    if (!sessionData) return false;
-    try {
-        const session = JSON.parse(sessionData);
-        return session.authenticated && session.expiry > Date.now();
-    } catch (e) {
-        return false;
-    }
-}
-
-function checkBoardAccess(board) {
-    const boardInfo = BOARDS[board];
-    if (boardInfo && boardInfo.hidden && !isAdminAuthenticated()) {
-        window.location.href = 'index.html';
-        return false;
-    }
-    return true;
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
     const board = getCurrentBoard();
-    
-    if (!checkBoardAccess(board)) return;
     
     // Setup page
     setupBoardHeader(board);
