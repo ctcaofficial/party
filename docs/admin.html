@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="admin-login-container">
+            <div class="admin-login-box">
+                <h1 class="admin-title">Admin Login</h1>
+                <form id="adminLoginForm" class="admin-form">
+                    <div class="admin-form-row">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required autocomplete="off" data-testid="input-admin-username">
+                    </div>
+                    <div class="admin-form-row">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required autocomplete="off" data-testid="input-admin-password">
+                    </div>
+                    <div class="admin-form-row">
+                        <button type="submit" class="admin-submit-btn" data-testid="button-admin-login">Login</button>
+                    </div>
+                    <div class="admin-error" id="errorMsg" style="display: none;" data-testid="text-admin-error"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
