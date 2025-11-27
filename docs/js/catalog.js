@@ -2,8 +2,30 @@
 
 let currentBoard = null;
 
+function isAdminAuthenticated() {
+    const sessionData = sessionStorage.getItem('adminSession');
+    if (!sessionData) return false;
+    try {
+        const session = JSON.parse(sessionData);
+        return session.authenticated && session.expiry > Date.now();
+    } catch (e) {
+        return false;
+    }
+}
+
+function checkBoardAccess(board) {
+    const boardInfo = BOARDS[board];
+    if (boardInfo && boardInfo.hidden && !isAdminAuthenticated()) {
+        window.location.href = 'index.html';
+        return false;
+    }
+    return true;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     currentBoard = getCurrentBoard();
+    
+    if (!checkBoardAccess(currentBoard)) return;
     
     setupBoardHeader(currentBoard);
     setupNavigation(currentBoard);

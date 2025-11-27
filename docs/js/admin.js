@@ -1,19 +1,4 @@
 // Admin authentication
-const ADMIN_CREDENTIALS = {
-    username: 'CTCA',
-    passwordHash: 'a3f2d8e1b4c5'
-};
-
-function simpleHash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;
-    }
-    return Math.abs(hash).toString(16);
-}
-
 function validateCredentials(username, password) {
     const expectedUser = 'CTCA';
     const expectedPass = 'drayfrick12';
