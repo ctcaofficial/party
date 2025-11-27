@@ -36,7 +36,10 @@ const BOARDS = {
     // Other
     'biz': { name: 'Business & Finance', description: 'Business and finance topics', category: 'Other' },
     'q': { name: 'Questionable', description: 'Questionable content', category: 'Other' },
-    'b': { name: 'Random', description: 'Random content', category: 'Other' }
+    'b': { name: 'Random', description: 'Random content', category: 'Other' },
+    
+    // Admin
+    'ctca': { name: 'CTCA', description: 'CTCA Admin Board', category: 'Admin', hidden: true }
 };
 
 // Get board info by tag
